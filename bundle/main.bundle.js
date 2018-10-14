@@ -1,0 +1,2 @@
+System.registerDynamic("ClientApp/app/app.module.js",[],!1,function(a,b,c){var d=System.registry.get("@@global-helpers").prepareGlobal(c.id,null,null);return function(a){console.log("test")}(),d()});
+//# sourceMappingURL=main.bundle.js.map

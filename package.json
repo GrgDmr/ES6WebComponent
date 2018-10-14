@@ -2,26 +2,32 @@
   "name": "es6app",
   "version": "1.0.0",
   "description": "jspm es6 project",
-  "main": "src/app.js",
+  "main": "ClientApp/app/app.module.js",
   "scripts": {
     "start": "npm run serve",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "jspm bundle src/app.js bundle/main.bundle.js --minify --inject",
-    "serve": "jspm depcache src/app.js && jspm unbundle && browser-sync start --server --files '**/*.*'",
+    "bundle": "jspm bundle ClientApp/app/app.module.js bundle/main.bundle.js --minify --inject",
+    "serve": "jspm depcache ClientApp/app/app.module.js && jspm unbundle && browser-sync start --server --files '**/*.*'",
     "jspminstall": "jspm install"
   },
   "keywords": [
     "jspm",
     "es6"
   ],
-  "author": "Giorgio D&#39;Amore (a202246) &lt;giorgio.damore@eng.it&gt;",
+  "author": "Giorgio D'Amore (a202246) &lt;giorgio.damore@eng.it&gt;",
   "license": "ISC",
   "jspm": {
     "name": "app",
+    "directories": {
+      "packages": "ClientApp/jspm_packages"
+    },
+    "configFiles": {
+      "jspm": "ClientApp/jspm.config.js"
+    },
     "dependencies": {
-      "css": "github:systemjs/plugin-css@^0.1.20",
+      "css": "github:systemjs/plugin-css@^0.1.37",
       "json": "github:systemjs/plugin-json@^0.1.0",
-      "text": "github:systemjs/plugin-text@^0.0.4",
+      "text": "github:systemjs/plugin-text@^0.0.11",
       "scss": "github:dougludlow/plugin-sass@^0.2.1"
     },
     "devDependencies": {

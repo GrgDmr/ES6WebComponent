@@ -1,4 +1,16 @@
 SystemJS.config({
+  trace: true,
+  paths: {
+    "*": "app/*.js",
+    "npm:": "ClientApp/jspm_packages/npm/",
+    "github:": "ClientApp/jspm_packages/github/",
+    "app/": "src/"
+  },
+  browserConfig: {
+    "paths": {
+      "*": "app/*.js"
+    }
+  },
   devConfig: {
     "map": {
       "plugin-babel": "npm:systemjs-plugin-babel@0.0.5"
@@ -6,10 +18,28 @@ SystemJS.config({
   },
   transpiler: "plugin-babel",
   babelOptions: {
+    "es2015": false,
+    "stage1": false,
+    "stage2": true,
+    "stage3": true,
+    "sourceMaps": false,
     "optional": [
-      "runtime"
+      "runtime",
+      "optimisation.modules.system"
     ],
     "blacklist": []
+  },
+  packages: {
+    "app": {
+      "meta": {
+        "*.js": {
+          "loader": "plugin-babel"
+        }
+      }
+    }
+  },
+  map: {
+    "@assets": "./assets"
   }
 });
 
@@ -34,7 +64,7 @@ SystemJS.config({
     "scss": "github:dougludlow/plugin-sass@0.2.1",
     "stream": "npm:jspm-nodelibs-stream@0.2.1",
     "string_decoder": "npm:jspm-nodelibs-string_decoder@0.2.2",
-    "text": "github:systemjs/plugin-text@0.0.4",
+    "text": "github:systemjs/plugin-text@0.0.11",
     "tty": "npm:jspm-nodelibs-tty@0.2.1",
     "util": "npm:jspm-nodelibs-util@0.2.2",
     "vm": "npm:jspm-nodelibs-vm@0.2.1"

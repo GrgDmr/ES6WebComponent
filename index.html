@@ -9,12 +9,12 @@
 
   <body>
       Es6App by Giorgio D&#39;Amore (a202246) &lt;giorgio.damore@eng.it&gt;
+      and me
 
-    <script src="jspm_packages/system.js"></script>
-    <script src="jspm.browser.js"></script>
-    <script src="jspm.config.js"></script>
+    <script src="ClientApp/jspm_packages/system.js"></script>
+    <script src="ClientApp/jspm.config.js"></script>
     <script>
-      System.import('src/app.js');
+      System.import('app').catch(function (ex) { console.error(ex); });
     </script>
   </body>
 
