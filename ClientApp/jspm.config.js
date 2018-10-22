@@ -1,19 +1,15 @@
 SystemJS.config({
-  trace: true,
+  baseURL: "ClientApp",
   paths: {
     "*": "app/*.js",
-    "npm:": "ClientApp/jspm_packages/npm/",
-    "github:": "ClientApp/jspm_packages/github/",
-    "app/": "src/"
-  },
-  browserConfig: {
-    "paths": {
-      "*": "app/*.js"
-    }
+    "npm:": "jspm_packages/npm/",
+    "github:": "jspm_packages/github/",
+    "widgets/": "widgets/",
+    "app/": "app/"
   },
   devConfig: {
     "map": {
-      "plugin-babel": "npm:systemjs-plugin-babel@0.0.5"
+      "plugin-babel": "npm:systemjs-plugin-babel@0.0.25"
     }
   },
   transpiler: "plugin-babel",
@@ -31,15 +27,20 @@ SystemJS.config({
   },
   packages: {
     "app": {
+      "main": "app.module.js",
+      "meta": {
+        "*.js": {
+          "loader": "plugin-babel"
+        }
+      }
+    },
+    "widgets": {
       "meta": {
         "*.js": {
           "loader": "plugin-babel"
         }
       }
     }
-  },
-  map: {
-    "@assets": "./assets"
   }
 });
 
@@ -56,10 +57,11 @@ SystemJS.config({
     "constants": "npm:jspm-nodelibs-constants@0.2.1",
     "crypto": "npm:jspm-nodelibs-crypto@0.2.1",
     "css": "github:systemjs/plugin-css@0.1.37",
-    "events": "npm:jspm-nodelibs-events@0.2.2",
+    "events": "npm:events@3.0.0",
     "fs": "npm:jspm-nodelibs-fs@0.2.1",
     "json": "github:systemjs/plugin-json@0.1.2",
     "path": "npm:jspm-nodelibs-path@0.2.3",
+    "plugin-babel": "npm:systemjs-plugin-babel@0.0.25",
     "process": "npm:jspm-nodelibs-process@0.2.1",
     "scss": "github:dougludlow/plugin-sass@0.2.1",
     "stream": "npm:jspm-nodelibs-stream@0.2.1",
@@ -67,6 +69,7 @@ SystemJS.config({
     "text": "github:systemjs/plugin-text@0.0.11",
     "tty": "npm:jspm-nodelibs-tty@0.2.1",
     "util": "npm:jspm-nodelibs-util@0.2.2",
+    "uuid": "npm:uuid@3.3.2",
     "vm": "npm:jspm-nodelibs-vm@0.2.1"
   },
   packages: {

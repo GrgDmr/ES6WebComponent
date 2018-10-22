@@ -1,12 +1,28 @@
-//import scss
-//import '@assets/scss/main.scss!';
 
-//import WidgetConfig from 'ClientApp/app/widgets/base.widget.js';
-//import WidgetConfig from 'widgets/base.widget.js';
-//import WidgetConfig from 'ClientApp/app/widgets/base.widget';
+import { WidgetsHandler } from 'widgets/widget.handler.core';
 
-console.log('test');
+const createWidget = async () => {             
+    try {       
+       
+        const contentElement = document.getElementById('container');
 
+        const WidgetsHandlerInstance = new WidgetsHandler( {
+            modulesMode:'config'
+        });
 
+        await WidgetsHandlerInstance.import();
+        
+        WidgetsHandlerInstance.factory({
+            pathList:['widgets/widget.one'],
+            typeList: ['widget-one'],
+            container: contentElement
+        });     
 
-//const WidgetConfigInstance = new WidgetConfig();
+        contentElement.setAttribute('style', 'display:block');                     
+    }
+    catch (error) {
+        console.log(error);
+    }                
+};
+
+createWidget();             

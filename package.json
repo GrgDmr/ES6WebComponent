@@ -2,12 +2,11 @@
   "name": "es6app",
   "version": "1.0.0",
   "description": "jspm es6 project",
-  "main": "ClientApp/app/app.module.js",
   "scripts": {
     "start": "npm run serve",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "jspm bundle ClientApp/app/app.module.js bundle/main.bundle.js --minify --inject",
-    "serve": "jspm depcache ClientApp/app/app.module.js && jspm unbundle && browser-sync start --server --files '**/*.*'",
+    "bundle": "jspm bundle app.module ClientApp/bundle/main.bundle.js --minify --inject",
+    "serve": "jspm depcache app.module && jspm unbundle && browser-sync start --server --files '**/*.*'",
     "jspminstall": "jspm install"
   },
   "keywords": [
@@ -19,7 +18,8 @@
   "jspm": {
     "name": "app",
     "directories": {
-      "packages": "ClientApp/jspm_packages"
+      "packages": "ClientApp/jspm_packages",
+      "baseURL": "ClientApp"
     },
     "configFiles": {
       "jspm": "ClientApp/jspm.config.js"
@@ -27,19 +27,19 @@
     "dependencies": {
       "css": "github:systemjs/plugin-css@^0.1.37",
       "json": "github:systemjs/plugin-json@^0.1.0",
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.25",
       "text": "github:systemjs/plugin-text@^0.0.11",
-      "scss": "github:dougludlow/plugin-sass@^0.2.1"
+      "scss": "github:dougludlow/plugin-sass@^0.2.1",
+      "uuid": "npm:uuid@^3.3.2"
     },
-    "devDependencies": {
-      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.5"
-    },
+    "devDependencies": {},
     "peerDependencies": {
       "assert": "npm:jspm-nodelibs-assert@^0.2.0",
       "buffer": "npm:jspm-nodelibs-buffer@^0.2.0",
       "child_process": "npm:jspm-nodelibs-child_process@^0.2.0",
       "constants": "npm:jspm-nodelibs-constants@^0.2.0",
       "crypto": "npm:jspm-nodelibs-crypto@^0.2.0",
-      "events": "npm:jspm-nodelibs-events@^0.2.0",
+      "events": "npm:events@^3.0.0",
       "fs": "npm:jspm-nodelibs-fs@^0.2.0",
       "path": "npm:jspm-nodelibs-path@^0.2.0",
       "process": "npm:jspm-nodelibs-process@^0.2.0",

@@ -5,7 +5,7 @@
 
   "node": true,
 
-  "esnext": true,
+  "esversion": 6,
 
   "camelcase": true,
 
@@ -15,18 +15,17 @@
 
   "latedef": true,
 
+  "maxlen": 100,
+
   "newcap": true,
 
   "quotmark": "single",
 
   "strict": true,
+
   "undef": true,
 
   "unused": true,
 
-  "eqnull": true,
-
-  "globals": {
-
-  }
+  "eqnull": true
 }
