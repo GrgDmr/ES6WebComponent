@@ -2,28 +2,21 @@ import EventEmitter from 'events';
 
 export class WidgetsHandler extends EventEmitter {
 
-    const x = [{
-        uuid: '',
-        type: '',
-        modulePath: '',
-        messageBusPath: '',
-        instance: null
-    }]
-
-    instances = {};
+    instances = new WeakMap();
     modulesMode = 'runtime';
 
     constructor({
-        modulesMode = null,
-        pathList = null
+        modulesMode = null
     } = null) {
 
+        super();
+
         this.modulesMode = modulesMode || this.modulesMode;
-        this.pathList = pathList;
+        this.instances.set(this, new Map());
     }
 
     getInstance(instanceName) {
-        return this.instances[instanceName];
+        throw new Error('getInstance not implemented exception');
     }
 
     onWidgetRendered() {
@@ -45,35 +38,29 @@ export class WidgetsHandler extends EventEmitter {
         container.appendChild(instance);
     }
 
-        /*viene passato il type o i types (array) dei wigdet. Il path è preso in qualche modo da un file di configurazione o qualcosa del genere  */
-        async import(pathList = null) {
+    /*viene passato il type o i types (array) dei wigdet. Il path è preso in qualche modo da un file di configurazione o qualcosa del genere  */
+    async import(pathList = null) {
 
-            if (!pathList && !this.pathList) {
-                throw new Error('pathList not exist');
-            }
-    
-            if (pathList && pathList.length) {
-                this.pathList = pathList;
-            }
-    
-            const importHandler = (path) => new Promise(async (resolve, reject) => {
-                try {
-                    const module = await System.import(path);
-    
-                    resolve({
-                        path,
-                        module
-                    });
-    
-                } catch (error) {
-                    reject(error);
-                }
-            });
-    
-            const importList = this.pathList.map(importHandler);
-            return await Promise.all(importList);
-            //this.importedList = await Promise.all(importList);
+        if (!pathList) {
+            throw new Error('pathList not exist');
         }
+
+        const importHandler = (path) => new Promise(async (resolve, reject) => {
+            try {
+                const module = await System.import(path);
+
+                resolve({
+                    path,
+                    module
+                });
+
+            } catch (error) {
+                reject(error);
+            }
+        });
+
+        return await Promise.all(pathList.map(importHandler));
+    }
 
     async factory({
         pathList = null,
@@ -81,33 +68,50 @@ export class WidgetsHandler extends EventEmitter {
         container = null
     } = null) {
 
-        const instances = [];
+        const factoryHandler = (Component, path) => {
 
-        const factoryHandler = (importedItem) => {
+            const ComponentInstance = new Component(this.modulesMode);
 
-            const Component = importedItem.module.Component;
+            this.instances.get(this).set(ComponentInstance.uuid, {
+                uuid: ComponentInstance.uuid,
+                type: Component.type,
+                modulePath: path,
+                messageBusPath: null
+            });
 
-            if (Component.type !== type) {
-                return;
-            }
+            //instanceMap.get(ComponentInstance.uuid).eventBus.on("widget:rendered", this.onWidgetRendered).on("widget:connected", this.onWidgetConnected);
 
-            if (!window.customElements.get(Component.type)) {
-                window.customElements.define(Component.type, Component);
-            }
-
-            this.instances[Component.type] = new Component(this.modulesMode);
-            
-            this.instances[Component.type].eventBus.on("widget:rendered", this.onWidgetRendered).on("widget:connected", this.onWidgetConnected);
-            
-            this.render({container, instance: this.instances[Component.type]});
+            this.render({
+                container,
+                instance: ComponentInstance
+            });
         };
 
-        if (pathList && pathList.lenth) {
+        if (pathList) {
             const imported = await this.import(pathList);
 
-            imported.forEach(factoryHandler);
+            imported.forEach((importedItem) => {
+                const Component = importedItem.module.Component;
+
+                if (!window.customElements.get(Component.type)) {
+                    window.customElements.define(Component.type, Component);
+                }
+
+                factoryHandler(Component, importedItem.path);
+            });
         }
 
-        //this.typeList.forEach(factoryHandler);
+        if (typeList) {
+            typeList.forEach((type) => {
+
+                if (!window.customElements.get(type)) {
+                    throw new Error(`type ${type} not yet registered. Please import module first.`)
+                }
+
+                const Component = window.customElements.get(type);
+
+                factoryHandler(Component, null);
+            });
+        }
     }
 }

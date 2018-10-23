@@ -2,80 +2,81 @@ import {
     WidgetBase
 } from 'widgets/widget.base.core';
 
+const templateHandler = (() => {
+
+  const sharedStyles = `
+      widget-one:not(:defined) {
+          /* Pre-style, give layout, replicate widget-one's eventual styles, etc. */
+          display: inline-block;
+          height: 100vh;
+          opacity: 0;
+          transition: opacity 0.3s ease-in-out;
+        }
+
+        :host {
+          display: inline-block;
+          width: 150px;
+          height: 150px;
+          margin: 50px;
+        }
+
+        :host([hidden]) {
+          display: none;
+        }
+      `;
+
+  const runtime = (data) => `
+          <style>
+            
+            ${sharedStyles}
+        
+            div {
+              font-size: 18px;
+              border: 1px solid #eeeeee;
+            }
+          </style>
+        
+        <div>${data.type} runtime ${data.counter}</div>
+  `;
+
+  const config = (data) => `
+            <style>
+              
+              ${sharedStyles}
+        
+              div {
+                font-size: 18px;
+                border: 1px solid #eeeeee;
+              }
+            </style>
+          
+          <div>${data.type} config ${data.counter}</div>
+        `;
+
+  return {
+      getTemplates(data = null) {
+          return {
+              config: config(data),
+              runtime: runtime(data)
+          }
+      }
+  };
+})();
+
 class WidgetOne extends WidgetBase {
 
     static type = 'widget-one';
 
-    templateHandler = (() => {
-
-        const self = this;
-
-        const sharedStyle = `
-            widget-one:not(:defined) {
-                /* Pre-style, give layout, replicate widget-one's eventual styles, etc. */
-                display: inline-block;
-                height: 100vh;
-                opacity: 0;
-                transition: opacity 0.3s ease-in-out;
-              }
-
-              :host {
-                display: inline-block;
-                width: 50px;
-                height: 50px;
-              }
-              :host([hidden]) {
-                display: none;
-              }
-            `;
-
-        const runtime = (data) => {
-            return `
-                <style>
-                  
-                  ${sharedStyle}
-              
-                  span {
-                    font-size: 24px;
-                  }
-                </style>
-              
-              <span>prova Runtime</span>
-            `;
-        };
-
-        const config = (data) => {
-            return `
-                  <style>
-                    
-                    ${sharedStyle}
-              
-                    span {
-                      font-size: 24px;
-                    }
-                  </style>
-                
-                <span>prova Configuratore</span>
-              `;
-        };
-
-        return {
-            get() {
-                return {
-                    config: config(),
-                    runtime: runtime()
-                }
-            }
-        };
-    })();
-
     constructor(mode = null) {
-        const self = this;
-
         super({
             mode: mode || 'runtime',
-            templates: self.templateHandler.get()
+            templates: templateHandler.getTemplates({
+              type: 'widget-one',
+              counter: document.querySelectorAll('widget-one').length || 0
+            })
         });
+
+        this.messageBusPath = 'aaaaa/bbb/ccc/etc';
     }
 
     connectedCallback() {

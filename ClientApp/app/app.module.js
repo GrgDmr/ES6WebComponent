@@ -1,28 +1,31 @@
+import {
+    WidgetsHandler
+} from 'widgets/widget.handler.core';
 
-import { WidgetsHandler } from 'widgets/widget.handler.core';
+const createWidget = async () => {
+    try {
 
-const createWidget = async () => {             
-    try {       
-       
         const contentElement = document.getElementById('container');
 
-        const WidgetsHandlerInstance = new WidgetsHandler( {
-            modulesMode:'config'
+        const WidgetsHandlerInstance = new WidgetsHandler({
+            modulesMode: 'config'
         });
 
-        await WidgetsHandlerInstance.import();
-        
-        WidgetsHandlerInstance.factory({
-            pathList:['widgets/widget.one'],
-            typeList: ['widget-one'],
+        await WidgetsHandlerInstance.factory({
+            pathList: ['widgets/widget.one', 'widgets/widget.zero'],
+            typeList: ['widget-one', 'widget-zero', 'widget-zero'],
             container: contentElement
-        });     
+        });
 
-        contentElement.setAttribute('style', 'display:block');                     
-    }
-    catch (error) {
+        console.log(`widget-one counter: ${document.querySelectorAll('widget-one').length}`);
+
+        const newComponentelement = contentElement.querySelector('widget-one');
+        //contentElement.querySelector('widget-one').eventBus
+        //contentElement.querySelector('widget-one').mode
+        //contentElement.querySelector('widget-one').messageBusPath
+    } catch (error) {
         console.log(error);
-    }                
+    }
 };
 
-createWidget();             
+createWidget();

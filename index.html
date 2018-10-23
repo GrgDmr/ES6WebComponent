@@ -2,22 +2,45 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>Es6App</title>
+    <meta charset="utf-8">
+    <title>Es6App Components</title>
+
+    <style>
+    html,
+    body,
+    .container {
+        height: 100%;
+    }
+
+    .container {
+        display: -webkit-flexbox;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .h3 {
+        text-align: center;
+    }
+    </style>
 </head>
 
-
-  <body>
-      Es6App by Giorgio D&#39;Amore (a202246) &lt;giorgio.damore@eng.it&gt;
-      and me
-
-      <div id='container'></div>
+<body>
+    <h3> Es6App Components by Giorgio D&#39;Amore (a202246) &lt;giorgio.damore@eng.it&gt; </h3>
+    <div id='container' class="container"></div>
 
     <script src="ClientApp/jspm_packages/system.js"></script>
     <script src="ClientApp/jspm.config.js"></script>
     <script>
-      System.import('app').catch(function (ex) { console.error(ex); });
+    System.import('app').catch(function(ex) {
+        console.error(ex);
+    });
     </script>
-  </body>
+</body>
 
 </html>

@@ -13,7 +13,7 @@ export class WidgetBase extends HTMLElement {
 
     eventBus = new WidgetEventBusHandler();
 
-    templateHandler = (() => {
+    baseTemplateHandler = (() => {
         const self = this;
 
         const build = (template) => {
@@ -31,7 +31,7 @@ export class WidgetBase extends HTMLElement {
         this.root = this.attachShadow({
             mode: 'open'
         });
-        this.root.appendChild(this.templateHandler.build(template));
+        this.root.appendChild(this.baseTemplateHandler.build(template));
 
         this.eventBus.emit("widget:rendered");
     }
